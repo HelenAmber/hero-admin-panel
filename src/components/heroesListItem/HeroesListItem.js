@@ -1,9 +1,6 @@
-import {useDispatch} from "react-redux";
-
 const HeroesListItem = ({name, description, element, deleteHero}) => {
 
     let elementClassName;
-    const dispatch = useDispatch();
 
     switch (element) {
         case 'fire':

@@ -15,9 +15,7 @@ const HeroesList = () => {
     const {heroes, heroesLoadingStatus} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
-    //const name = useSelector(state => state.heroes.name);
-   
-
+   console.log(heroes);
     useEffect(() => {
         dispatch(heroesFetching());
         request("http://localhost:3001/heroes")
@@ -50,10 +48,9 @@ const HeroesList = () => {
              if(hero.name === name) {
                   heroes.splice(i, 1);                
              }
-            console.log(heroes);
             return heroes;
          })
-         dispatch(heroesFetched(heroes))
+         dispatch(heroesFetched(heroes));
     }
 
     return (

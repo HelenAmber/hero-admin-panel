@@ -1,5 +1,5 @@
-
-
+import { Formik, Form, Field, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
 // в общее состояние и отображаться в списке + фильтроваться
@@ -9,13 +9,46 @@
 // Дополнительно:
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
-
+import {useState} from 'react';
 const HeroesAddForm = () => {
+    // const [hero, setHero] = useState(null);
+     
+    // const onHeroLoaded = (hero) => {
+    //    setHero(hero);
+    // }
+    const heroCreating = () => {
+        return {
+            id: 1, 
+            name: 'Первый герой', 
+            description: 'Первый герой в рейтинге!', 
+            element: 'fire'
+        }
+    }
+
     return (
-        <form className="border p-4 shadow-lg rounded">
+        <Formik
+            initialValues = {{
+                    name:'',
+                    description:'',
+                    element:''
+                }}
+                validation = {Yup.object({
+                    name: Yup.string()
+                            .min(2, 'Введите не менее двух символов')
+                            .required('Поле обязательно для заполнения'),
+                    description: Yup.string()
+                            .min(2, 'Введите не менее двух символов')
+                            .required('Поле обязательно для заполнения'),
+                    element: Yup.string()
+                            .required('Поле обязательно для заполнения'),
+                    }) 
+                }
+                onSubmit = {(values) => console.log(JSON.stringify(values, null, 2))}>
+
+        <Form className="border p-4 shadow-lg rounded">
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
-                <input 
+                <Field 
                     required
                     type="text" 
                     name="name" 
@@ -26,9 +59,9 @@ const HeroesAddForm = () => {
 
             <div className="mb-3">
                 <label htmlFor="text" className="form-label fs-4">Описание</label>
-                <textarea
+                <Field
                     required
-                    name="text" 
+                    name="description" 
                     className="form-control" 
                     id="text" 
                     placeholder="Что я умею?"
@@ -37,8 +70,8 @@ const HeroesAddForm = () => {
 
             <div className="mb-3">
                 <label htmlFor="element" className="form-label">Выбрать элемент героя</label>
-                <select 
-                    required
+                <Field 
+                    as="select"
                     className="form-select" 
                     id="element" 
                     name="element">
@@ -47,11 +80,12 @@ const HeroesAddForm = () => {
                     <option value="water">Вода</option>
                     <option value="wind">Ветер</option>
                     <option value="earth">Земля</option>
-                </select>
+                </Field>
             </div>
 
             <button type="submit" className="btn btn-primary">Создать</button>
-        </form>
+        </Form>
+     </Formik>
     )
 }
 
