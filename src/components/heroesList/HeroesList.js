@@ -15,6 +15,8 @@ const HeroesList = () => {
     const {heroes, heroesLoadingStatus} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
+    //const name = useSelector(state => state.heroes.name);
+   
 
     useEffect(() => {
         dispatch(heroesFetching());
@@ -37,11 +39,23 @@ const HeroesList = () => {
         }
 
         return arr.map(({id, ...props}) => {
-            return <HeroesListItem key={id} {...props}/>
+            return <HeroesListItem key={id} deleteHero={deleteHero}{...props}/>
         })
     }
-
+ 
     const elements = renderHeroesList(heroes);
+
+    function deleteHero(name) {
+         heroes.map( (hero, i) => {
+             if(hero.name === name) {
+                  heroes.splice(i, 1);                
+             }
+            console.log(heroes);
+            return heroes;
+         })
+         dispatch(heroesFetched(heroes))
+    }
+
     return (
         <ul>
             {elements}
