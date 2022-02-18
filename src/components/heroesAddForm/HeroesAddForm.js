@@ -1,5 +1,7 @@
 import { Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
+import {useSelector, useDispatch} from 'react-redux';
+import { heroesFetched } from '../../actions';
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
 // в общее состояние и отображаться в списке + фильтроваться
@@ -9,20 +11,22 @@ import * as Yup from 'yup';
 // Дополнительно:
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
-import {useState} from 'react';
+
 const HeroesAddForm = () => {
-    // const [hero, setHero] = useState(null);
-     
-    // const onHeroLoaded = (hero) => {
-    //    setHero(hero);
-    // }
-    const heroCreating = () => {
-        return {
-            id: 1, 
-            name: 'Первый герой', 
-            description: 'Первый герой в рейтинге!', 
-            element: 'fire'
+    const dispatch = useDispatch();
+    const {heroes} = useSelector(state => state);
+    const newHeroId = heroes.length + 1;
+
+    const newHeroCreating = (values) => {        
+        const newHero = {
+            id: newHeroId, 
+            name: values.name, 
+            description: values.description, 
+            element: values.element
         }
+
+        heroes.push(newHero);
+        dispatch(heroesFetched(heroes));
     }
 
     return (
@@ -43,7 +47,7 @@ const HeroesAddForm = () => {
                             .required('Поле обязательно для заполнения'),
                     }) 
                 }
-                onSubmit = {(values) => console.log(JSON.stringify(values, null, 2))}>
+                onSubmit = {(values) => newHeroCreating(values)}>
 
         <Form className="border p-4 shadow-lg rounded">
             <div className="mb-3">
@@ -56,7 +60,7 @@ const HeroesAddForm = () => {
                     id="name" 
                     placeholder="Как меня зовут?"/>
             </div>
-
+           <ErrorMessage name="name" component="div"/>
             <div className="mb-3">
                 <label htmlFor="text" className="form-label fs-4">Описание</label>
                 <Field
@@ -67,7 +71,7 @@ const HeroesAddForm = () => {
                     placeholder="Что я умею?"
                     style={{"height": '130px'}}/>
             </div>
-
+            <ErrorMessage name="description" component="div"/>
             <div className="mb-3">
                 <label htmlFor="element" className="form-label">Выбрать элемент героя</label>
                 <Field 
@@ -82,8 +86,10 @@ const HeroesAddForm = () => {
                     <option value="earth">Земля</option>
                 </Field>
             </div>
-
-            <button type="submit" className="btn btn-primary">Создать</button>
+            <ErrorMessage name="element" component="div"/>
+            <button type="submit" 
+                    className="btn btn-primary"
+                    >Создать</button>
         </Form>
      </Formik>
     )
