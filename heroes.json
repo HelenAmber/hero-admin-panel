@@ -11,6 +11,12 @@
       "name": "Неизвестный герой",
       "description": "Скрывающийся в тени",
       "element": "wind"
+    },
+    {
+      "id": 3,
+      "name": "CAPTAIN MARVEL",
+      "description": "прааааплг",
+      "element": "fire"
     }
   ],
   "filters": [

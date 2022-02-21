@@ -1,7 +1,8 @@
 import { Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
+import {useHttp} from '../../hooks/http.hook';
 import {useSelector, useDispatch} from 'react-redux';
-import { heroesFetched } from '../../actions';
+import { heroAdded } from '../../actions';
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
 // в общее состояние и отображаться в списке + фильтроваться
@@ -15,6 +16,7 @@ import { heroesFetched } from '../../actions';
 const HeroesAddForm = () => {
     const dispatch = useDispatch();
     const {heroes} = useSelector(state => state);
+    const {request} = useHttp();
     const newHeroId = heroes.length + 1;
 
     const newHeroCreating = (values) => {        
@@ -25,8 +27,9 @@ const HeroesAddForm = () => {
             element: values.element
         }
 
-        heroes.push(newHero);
-        dispatch(heroesFetched(heroes));
+       request(`http://localhost:3001/heroes`, 'POST', JSON.stringify(newHero))
+        .then(dispatch(heroAdded(newHero)))
+        .catch(error => console.log(error))
     }
 
     return (
