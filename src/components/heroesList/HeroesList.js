@@ -12,7 +12,7 @@ import Spinner from '../spinner/Spinner';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus} = useSelector(state => state);
+    const {heroes, filteredHeroes, heroesLoadingStatus} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
    
@@ -42,14 +42,17 @@ const HeroesList = () => {
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
-
+console.log(arr);
         return arr.map(({id, ...props}) => {
             return <HeroesListItem key={id} deleteHero={() => deleteHero(id)}{...props}/>
         })
     }
- 
-    const elements = renderHeroesList(heroes);
   
+    let elements = renderHeroesList(heroes);
+    if (filteredHeroes.length !== 0) {
+        elements = renderHeroesList(filteredHeroes);
+    } 
+    
     return (
         <ul>
             {elements}

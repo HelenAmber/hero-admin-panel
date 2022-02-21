@@ -1,22 +1,22 @@
 {
   "heroes": [
     {
-      "id": 1,
-      "name": "Первый герой",
-      "description": "Первый герой в рейтинге!",
-      "element": "fire"
-    },
-    {
-      "id": 2,
-      "name": "Неизвестный герой",
-      "description": "Скрывающийся в тени",
+      "id": 3,
+      "name": "Женщина-Кошка",
+      "description": "Любящая жизнь",
       "element": "wind"
     },
     {
-      "id": 3,
-      "name": "CAPTAIN MARVEL",
-      "description": "прааааплг",
+      "id": "a41df9f7-a7eb-4b18-9e32-1442c649f85a",
+      "name": "Супермен",
+      "description": "Спасающий мир",
       "element": "fire"
+    },
+    {
+      "id": "170fb15e-099f-42a3-b19e-0cac2f10d2b4",
+      "name": "Иешуа",
+      "description": "Любящий людей",
+      "element": "earth"
     }
   ],
   "filters": [
