@@ -12,7 +12,15 @@ import Spinner from '../spinner/Spinner';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const {heroes, filteredHeroes, heroesLoadingStatus} = useSelector(state => state);
+    const filteredHeroes = useSelector(state => {
+        if(state.activeFilter === 'all'){
+            return state.heroes;
+        } else {
+            return state.heroes.filter(item => item.element === state.activeFilter);
+        }
+    })
+
+    const heroesLoadingStatus = useSelector(state => state.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
    
@@ -21,7 +29,6 @@ const HeroesList = () => {
         request("http://localhost:3001/heroes")
             .then(data => dispatch(heroesFetched(data)))
             .catch(() => dispatch(heroesFetchingError()))
-
         // eslint-disable-next-line
     }, []);
 
@@ -39,10 +46,9 @@ const HeroesList = () => {
     }
     
     const renderHeroesList = (arr) => {
-        if (arr.length === 0) {
-            
+        if (arr.length === 0) {         
             return (
-                <CSSTransition timeout={20} classNames="hero">
+                <CSSTransition timeout={0} classNames="hero">
                     <h5 className="text-center mt-5">Героев пока нет</h5>
                 </CSSTransition>
             )
@@ -50,23 +56,18 @@ const HeroesList = () => {
 
         return arr.map(({id, ...props}) => {
             return (
-                <CSSTransition timeout={1000} key={id} classNames="hero">
+                <CSSTransition key={id} timeout={500} classNames="hero">
                     <HeroesListItem deleteHero={() => deleteHero(id)}{...props}/>
                 </CSSTransition>
             )
         })
     }
   
-    let elements = renderHeroesList(heroes);
-     if (filteredHeroes.length > 0) {
-         elements = renderHeroesList(filteredHeroes);
-     } 
+    let elements = renderHeroesList(filteredHeroes);
     
     return (
         <TransitionGroup component="ul">
-            <ul>
                 {elements}
-            </ul>
         </TransitionGroup>
     )
 }

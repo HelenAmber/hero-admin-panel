@@ -1,8 +1,10 @@
 
 import {useSelector, useDispatch} from 'react-redux';
 import {useHttp} from '../../hooks/http.hook';
-import { heroesFiltered, filtresFetched } from '../../actions';
 import {useEffect} from 'react';
+import { filtersFetching, filtresFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
+import Spinner from '../spinner/Spinner';
+import classNames from 'classnames';
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -12,28 +14,36 @@ import {useEffect} from 'react';
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
-    const {heroes, filters} = useSelector(state => state);
+    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
     useEffect (() => {
+        dispatch(filtersFetching());
         request("http://localhost:3001/filters")
           .then(data => dispatch(filtresFetched(data)))
-          .catch(error => console.log(error))
+          .catch(error => dispatch(filtersFetchingError()))
           // eslint-disable-next-line
     }, [])
 
-    const heroesFilter = (element) => {
-            let arr = heroes.filter(item => item.element === element);
-            dispatch(heroesFiltered(arr));            
+    if (filtersLoadingStatus === "loading") {
+        return <Spinner/>;
+    } else if (filtersLoadingStatus === "error") {
+        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
 
     const buttonsCreator = (arr) => {
+        
          return arr.map(item => {
+            const btnClass = classNames( item.class, {
+                'active': item.id === activeFilter
+            });
             return (
-                <button  onClick={() => heroesFilter(item.id)} 
-                         className={item.class}
-                         id={item.id}>{item.name}</button>
+                <button  onClick={() => dispatch(activeFilterChanged(item.id))} 
+                         className={btnClass}
+                         id={item.id}>
+                             {item.name}
+                </button>
             )
          })        
      }

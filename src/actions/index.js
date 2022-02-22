@@ -31,16 +31,28 @@ export const heroAdded = (newHero) => {
     }
 }
 
- export const filtresFetched = (filtres) => {
-     return {
-         type: 'FILTRES_FETCHED',
-         payload: filtres
-     }
- }
+export const filtersFetching = () => {
+    return {
+        type: 'FILTERS_FETCHING'
+    }
+}
 
- export const heroesFiltered = (newHeroes) => {
+export const filtresFetched = (filtres) => {
      return {
-         type: 'HEROES_FILTERED',
-         payload: newHeroes
-     }
- }
+        type: 'FILTRES_FETCHED',
+        payload: filtres
+    }
+}
+
+ export const filtersFetchingError = () => {
+    return {
+        type: 'FILTERS_FETCHING_ERROR'
+    }
+}
+
+export const activeFilterChanged = (filter) => {
+    return {
+        type: 'ACTIVE_FILTER_CHANGED',
+        payload: filter
+    }
+}

@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {useHttp} from '../../hooks/http.hook';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { heroAdded } from '../../actions';
 import { v4 as uuidv4 } from 'uuid';
 // Задача для этого компонента:
@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 // данных из фильтров
 
 const HeroesAddForm = () => {
+    const {filters, filtersLoadingStatus} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
     const newHeroId = uuidv4();
@@ -30,6 +31,22 @@ const HeroesAddForm = () => {
        request(`http://localhost:3001/heroes`, 'POST', JSON.stringify(newHero))
         .then(dispatch(heroAdded(newHero)))
         .catch(error => console.log(error))
+    }
+
+    const renderFilters = (filters, status) => {
+        if (status === "loading") {
+            return <option>Загрузка элементов</option>
+        } else if (status === "error") {
+            return <option>Ошибка загрузки</option>
+        }
+        
+        if (filters && filters.length > 0 ) {
+            return filters.map(({name, id}) => {
+                if (id === 'all')  return;
+
+                return <option key={id} value={id}>{name}</option>
+            })
+        }
     }
 
     return (
@@ -83,10 +100,11 @@ const HeroesAddForm = () => {
                     id="element" 
                     name="element">
                     <option >Я владею элементом...</option>
-                    <option value="fire">Огонь</option>
+                    {/* <option value="fire">Огонь</option>
                     <option value="water">Вода</option>
                     <option value="wind">Ветер</option>
-                    <option value="earth">Земля</option>
+                    <option value="earth">Земля</option> */}
+                    {renderFilters(filters, filtersLoadingStatus)}
                 </Field>
             </div>
             <ErrorMessage name="element" component="div"/>
