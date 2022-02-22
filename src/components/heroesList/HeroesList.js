@@ -60,7 +60,7 @@ const HeroesList = () => {
 
         return arr.map(({id, ...props}) => {
             return (
-                <CSSTransition key={id} timeout={500} classNames="hero">
+                <CSSTransition key={id} timeout={800} classNames="hero">
                     <HeroesListItem deleteHero={() => deleteHero(id)}{...props}/>
                 </CSSTransition>
             )
