@@ -35,11 +35,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 heroes: newHeroesList
             }
-        // case 'FILTRES_FETCHED':
-        //     return {
-        //     ...state,
-        //     filter: action.payload,
-        //     }
+         case 'FILTRES_FETCHED':
+             return {
+             ...state,
+             filters: action.payload,
+             }
         case 'HEROES_FILTERED':
              return {
                  ...state,
