@@ -17,6 +17,12 @@
       "name": "Иешуа",
       "description": "Любящий людей",
       "element": "earth"
+    },
+    {
+      "id": "8fa4a221-3d08-40c7-b3e9-68849953d916",
+      "name": "CAPTAIN MARVEL (PHYLA-VELL)",
+      "description": "Спасающий мир!",
+      "element": "wind"
     }
   ],
   "filters": [
