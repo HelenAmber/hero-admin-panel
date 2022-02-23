@@ -1,10 +1,10 @@
 
 import {useSelector, useDispatch} from 'react-redux';
-import {useHttp} from '../../hooks/http.hook';
 import {useEffect} from 'react';
-import {activeFilterChanged, fetchFilters } from './heroesFiltersSlice';
+import {activeFilterChanged, fetchFilters, selectAll } from './heroesFiltersSlice';
 import Spinner from '../spinner/Spinner';
 import classNames from 'classnames';
+import store from '../../store';
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -13,9 +13,10 @@ import classNames from 'classnames';
 // Изменять json-файл для удобства МОЖНО!
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
-const HeroesFilters = () => {
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
-    const dispatch = useDispatch();
+const HeroesFilters = () => { 
+    const dispatch = useDispatch();  
+    const {filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
+    const filters = selectAll(store.getState());       
 
     useEffect (() => {
         dispatch(fetchFilters());

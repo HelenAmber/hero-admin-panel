@@ -3,7 +3,10 @@ import * as Yup from 'yup';
 import {useHttp} from '../../hooks/http.hook';
 import {useDispatch, useSelector} from 'react-redux';
 import { heroAdded } from '../../components/heroesList/heroesSlice';
+import {selectAll} from '../heroesFilters/heroesFiltersSlice'
 import { v4 as uuidv4 } from 'uuid';
+import store from '../../store';
+
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
 // в общее состояние и отображаться в списке + фильтроваться
@@ -15,14 +18,14 @@ import { v4 as uuidv4 } from 'uuid';
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const {filters, filtersLoadingStatus} = useSelector(state => state.filters);
+    const filters = selectAll(store.getState());
+    const {filtersLoadingStatus} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
-    const newHeroId = uuidv4();
 
     const newHeroCreating = (values) => {        
         const newHero = {
-            id: newHeroId, 
+            id: uuidv4(), 
             name: values.name, 
             description: values.description, 
             element: values.element
